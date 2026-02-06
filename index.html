@@ -5,126 +5,121 @@
 <title>My First Valentine</title>
 
 <style>
-body{
-  height:100vh;
-  margin:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:radial-gradient(circle at top left,#ff9a9e,#fad0c4,#ffd1dc);
-  font-family:'Comic Sans MS',cursive;
-  overflow:hidden;
-  position:relative;
-}
+  html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
 
-/* floating glow blobs */
-body::before,body::after{
-  content:"";
-  position:absolute;
-  width:420px;
-  height:420px;
-  background:radial-gradient(circle,rgba(255,255,255,.35),transparent 70%);
-  filter:blur(90px);
-  animation:blob 18s infinite alternate ease-in-out;
-}
-body::after{animation-delay:6s;width:350px;height:350px;}
-@keyframes blob{from{transform:translate(-120px,-100px)}to{transform:translate(260px,200px)}}
+  body{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: radial-gradient(circle at top left,#ff9a9e,#fad0c4,#ffd1dc);
+    font-family:'Comic Sans MS',cursive;
+    overflow:hidden;
+    position:relative;
+  }
 
-/* LIQUID GLASS CARD */
-.container{
-  padding:55px 60px;
-  border-radius:30px;
-  background:linear-gradient(135deg,rgba(255,255,255,.35),rgba(255,255,255,.1));
-  backdrop-filter:blur(25px) saturate(180%);
-  border:1px solid rgba(255,255,255,.4);
-  box-shadow:inset 0 1px 1px rgba(255,255,255,.6),0 25px 50px rgba(0,0,0,.25);
-  text-align:center;
-  z-index:2;
-  animation:liquidWave 6s infinite ease-in-out;
-}
-@keyframes liquidWave{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-6px)}
-}
+  body::before, body::after{
+    content:"";
+    position:absolute;
+    width:420px;
+    height:420px;
+    background:radial-gradient(circle,rgba(255,255,255,.35),transparent 70%);
+    filter:blur(90px);
+    animation:blob 18s infinite alternate ease-in-out;
+    z-index:0;
+  }
+  body::after{animation-delay:6s;width:350px;height:350px;}
 
-h1{
-  font-size:2.3rem;
-  color:#ff1e56;
-  margin-bottom:35px;
-  text-shadow:0 4px 10px rgba(0,0,0,.2);
-}
+  @keyframes blob{
+    from{transform:translate(-120px,-100px)}
+    to{transform:translate(260px,200px)}
+  }
 
-/* BUTTONS */
-button{
-  padding:16px 38px;
-  font-size:18px;
-  border-radius:18px;
-  cursor:pointer;
-  margin:12px;
-  font-weight:bold;
-  transition:.25s;
-}
+  /* FULL SCREEN CARD */
+  .container{
+    width: 100vw;
+    height: 100vh;
+    padding: 60px;
+    border-radius: 0;
+    background: linear-gradient(135deg,rgba(255,255,255,.35),rgba(255,255,255,.1));
+    backdrop-filter: blur(25px) saturate(180%);
+    border: 1px solid rgba(255,255,255,.4);
+    box-shadow: inset 0 1px 1px rgba(255,255,255,.6), 0 25px 50px rgba(0,0,0,.25);
+    text-align:center;
+    z-index:2;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+  }
 
-#yes{
-  border:none;
-  background:linear-gradient(135deg,#ff1e56,#ff8fa3);
-  color:white;
-  box-shadow:0 0 30px rgba(255,30,86,.6);
-  animation:pulse 2s infinite;
-}
-@keyframes pulse{
-  0%,100%{transform:scale(1)}
-  50%{transform:scale(1.08)}
-}
-#yes:hover{box-shadow:0 0 45px rgba(255,30,86,.9)}
+  .container::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.5), transparent 70%);
+    opacity:0.5;
+    pointer-events:none;
+  }
 
-#no{
-  position:absolute;
-  left:56%;
-  top:62%;
-  background:linear-gradient(135deg,rgba(255,255,255,.35),rgba(255,255,255,.15));
-  color:#ff1e56;
-  border:1px solid rgba(255,255,255,.45);
-}
+  h1{
+    font-size: 2.5rem;
+    color:#ff1e56;
+    margin-bottom:35px;
+    text-shadow:0 4px 10px rgba(0,0,0,.2);
+    z-index: 3;
+  }
 
-/* STORY TEXT */
-.story{
-  font-size:2.4rem;
-  animation:fadeScale 1.4s ease forwards,heartbeat 2s infinite;
-}
-@keyframes fadeScale{
-  from{opacity:0;transform:scale(.9)}
-  to{opacity:1;transform:scale(1)}
-}
-@keyframes heartbeat{
-  0%,100%{transform:scale(1)}
-  50%{transform:scale(1.05)}
-}
+  button{
+    padding: 16px 38px;
+    font-size: 18px;
+    border-radius: 18px;
+    cursor:pointer;
+    margin: 12px;
+    font-weight:bold;
+    transition:.25s;
+    z-index: 3;
+  }
 
-/* FLOATING HEART PETALS */
-.heart{
-  position:absolute;
-  bottom:-20px;
-  font-size:16px;
-  animation:floatUp linear infinite;
-  pointer-events:none;
-}
-@keyframes floatUp{
-  from{transform:translateY(0) rotate(0deg);opacity:1}
-  to{transform:translateY(-110vh) rotate(360deg);opacity:0}
-}
+  #yes{
+    border:none;
+    background:linear-gradient(135deg,#ff1e56,#ff8fa3);
+    color:white;
+    box-shadow:0 0 30px rgba(255,30,86,.6);
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.08)}
+  }
 
-/* SPARKLES */
-.sparkle{
-  position:absolute;
-  font-size:10px;
-  opacity:.8;
-  animation:sparkle 3s linear infinite;
-}
-@keyframes sparkle{
-  from{transform:translateY(0);opacity:1}
-  to{transform:translateY(-60px);opacity:0}
-}
+  #yes:hover{box-shadow:0 0 45px rgba(255,30,86,.9)}
+
+  #no{
+    position:absolute;
+    left:56%;
+    top:62%;
+    background:linear-gradient(135deg,rgba(255,255,255,.35),rgba(255,255,255,.15));
+    color:#ff1e56;
+    border:1px solid rgba(255,255,255,.45);
+  }
+
+  .heart{
+    position:absolute;
+    bottom:-20px;
+    font-size:16px;
+    animation:floatUp linear infinite;
+    pointer-events:none;
+  }
+
+  @keyframes floatUp{
+    from{transform:translateY(0) rotate(0deg);opacity:1}
+    to{transform:translateY(-110vh) rotate(360deg);opacity:0}
+  }
 </style>
 </head>
 
@@ -138,78 +133,66 @@ button{
 <button id="no">No 💔</button>
 
 <script>
-/* 😈 NO BUTTON */
-const noBtn=document.getElementById("no");
-function moveNo(){
-  const p=30;
-  noBtn.style.left=Math.random()*(innerWidth-noBtn.offsetWidth-p)+"px";
-  noBtn.style.top=Math.random()*(innerHeight-noBtn.offsetHeight-p)+"px";
-}
-noBtn.addEventListener("mouseenter",moveNo);
-document.addEventListener("mousemove",e=>{
-  const r=noBtn.getBoundingClientRect();
-  if(Math.hypot(e.clientX-r.left,e.clientY-r.top)<110)moveNo();
-});
+  const noBtn=document.getElementById("no");
+  function moveNo(){
+    const p=30;
+    noBtn.style.left=Math.random()*(innerWidth-noBtn.offsetWidth-p)+"px";
+    noBtn.style.top=Math.random()*(innerHeight-noBtn.offsetHeight-p)+"px";
+  }
+  noBtn.addEventListener("mouseenter",moveNo);
 
-/* 💖 STORY FLOW */
-document.getElementById("yes").onclick=()=>{
-  document.body.innerHTML=`
-    <div style="
-      height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:radial-gradient(circle,#ff9aa2,#ff1e56);
-      color:white;
-      text-align:center;
-    ">
-      <div id="story" class="story"></div>
-    </div>
-  `;
+  document.addEventListener("mousemove",e=>{
+    const r=noBtn.getBoundingClientRect();
+    if(Math.hypot(e.clientX-r.left,e.clientY-r.top)<110)moveNo();
+  });
 
-  const lines=[
-    "You said yes… 💕",
-    "My heart waited for this 💓",
-    "This is my first Valentine 🥹",
-    "I was nervous to ask you 🌸",
-    "But I’m glad it’s you 💖",
-    "Happy Valentine’s Day, Chinnu 💍"
-  ];
+  document.getElementById("yes").onclick=()=>{
+    document.body.innerHTML=`
+      <div style="
+        height:100vh;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        background:radial-gradient(circle,#ff9aa2,#ff1e56);
+        color:white;
+        text-align:center;
+        font-family:'Comic Sans MS', cursive;
+        overflow:hidden;
+      ">
+        <div id="story" style="font-size:2.4rem;"></div>
+      </div>
+    `;
 
-  let i=0;
-  const s=document.getElementById("story");
-  const interval=setInterval(()=>{
-    s.innerHTML=lines[i];
-    i++;
-    if(i===lines.length)clearInterval(interval);
-  },2200);
+    const lines=[
+      "You said yes… 💕",
+      "My heart waited for this 💓",
+      "This is my first Valentine 🥹",
+      "I was nervous to ask you 🌸",
+      "But I’m glad it’s you 💖",
+      "Happy Valentine’s Day, Chinnu 💍"
+    ];
 
-  setInterval(createHeart,350);
-  setInterval(createSparkle,180);
-};
+    let i=0;
+    const s=document.getElementById("story");
+    const interval=setInterval(()=>{
+      s.innerHTML=lines[i];
+      i++;
+      if(i===lines.length)clearInterval(interval);
+    },2200);
 
-/* HEART PETALS */
-function createHeart(){
-  const h=document.createElement("div");
-  h.className="heart";
-  h.innerHTML="💗";
-  h.style.left=Math.random()*100+"vw";
-  h.style.fontSize=Math.random()*14+14+"px";
-  h.style.animationDuration=Math.random()*3+4+"s";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),7000);
-}
+    setInterval(createHeart,350);
+  };
 
-/* SPARKLES */
-function createSparkle(){
-  const s=document.createElement("div");
-  s.className="sparkle";
-  s.innerHTML="✨";
-  s.style.left=Math.random()*100+"vw";
-  s.style.top=Math.random()*100+"vh";
-  document.body.appendChild(s);
-  setTimeout(()=>s.remove(),3000);
-}
+  function createHeart(){
+    const h=document.createElement("div");
+    h.className="heart";
+    h.innerHTML="💗";
+    h.style.left=Math.random()*100+"vw";
+    h.style.fontSize=Math.random()*14+14+"px";
+    h.style.animationDuration=Math.random()*3+4+"s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),7000);
+  }
 </script>
 
 </body>
