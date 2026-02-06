@@ -24,6 +24,7 @@
     background: linear-gradient(135deg, #d6336c 0%, #ff6b95 100%);
   }
 
+  /* Blob background animations */
   body::before, body::after {
     content: "";
     position: absolute;
@@ -54,12 +55,53 @@
     box-sizing: border-box;
   }
 
+  /* Intro Section: Hold Heart */
+  #hold-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 1s;
+  }
+
+  .hold-instruction {
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+
+  #heart-to-hold {
+    font-size: 80px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.1s, filter 0.3s;
+    animation: heartbeat 1.5s infinite;
+    display: inline-block;
+  }
+
+  @keyframes heartbeat {
+    0% { transform: scale(1); }
+    15% { transform: scale(1.2); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.1); }
+    60% { transform: scale(1); }
+  }
+
+  /* Proposal Section (Hidden initially) */
+  #proposal-section {
+    display: none;
+    opacity: 0;
+    transition: opacity 1s;
+    flex-direction: column;
+    align-items: center;
+  }
+
   h1 {
     font-size: 2.8rem;
     color: white;
     margin-bottom: 35px;
     text-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    z-index: 3;
   }
 
   img.proposal-img {
@@ -80,7 +122,6 @@
     margin: 12px;
     font-weight: bold;
     transition: 0.25s;
-    z-index: 3;
     border: none;
   }
 
@@ -97,14 +138,12 @@
   }
 
   #no {
-    position: absolute;
-    left: 50%;
-    top: 75%;
-    transform: translateX(-50%);
+    position: fixed;
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(5px);
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.4);
+    z-index: 10;
   }
 
   .heart {
@@ -126,36 +165,88 @@
 <body>
 
 <div class="container">
-  <img src="intro.png" alt="Intro" class="proposal-img" />
-  <h1>Chinnu, will you marry me? 💍</h1>
-  <button id="yes">Yes 💖</button>
+  <div id="hold-section">
+    <div class="hold-instruction">Hold my heart... ❤️</div>
+    <div id="heart-to-hold">❤️</div>
+  </div>
+
+  <div id="proposal-section">
+    <img src="intro.png" alt="Intro" class="proposal-img" />
+    <h1>Chinnu, will you marry me? 💍</h1>
+    <button id="yes">Yes 💖</button>
+  </div>
 </div>
 
-<button id="no">No 💔</button>
+<button id="no" style="display:none;">No 💔</button>
 
 <script>
   const noBtn = document.getElementById("no");
+  const heartToHold = document.getElementById("heart-to-hold");
+  const holdSection = document.getElementById("hold-section");
+  const proposalSection = document.getElementById("proposal-section");
 
+  let holdTimer;
+  let scale = 1;
+
+  // HOLD LOGIC
+  function startHold() {
+    holdTimer = setInterval(() => {
+      scale += 0.05;
+      heartToHold.style.transform = `scale(${scale})`;
+      heartToHold.style.filter = `drop-shadow(0 0 ${scale * 10}px white)`;
+      
+      if (scale > 3) {
+        completeHold();
+      }
+    }, 50);
+  }
+
+  function endHold() {
+    clearInterval(holdTimer);
+    if (scale <= 3) {
+      scale = 1;
+      heartToHold.style.transform = `scale(1)`;
+      heartToHold.style.filter = `none`;
+    }
+  }
+
+  function completeHold() {
+    clearInterval(holdTimer);
+    holdSection.style.opacity = "0";
+    setTimeout(() => {
+      holdSection.style.display = "none";
+      proposalSection.style.display = "flex";
+      noBtn.style.display = "block";
+      setTimeout(() => proposalSection.style.opacity = "1", 50);
+    }, 1000);
+  }
+
+  // Event Listeners for holding
+  heartToHold.addEventListener("mousedown", startHold);
+  heartToHold.addEventListener("touchstart", startHold);
+  window.addEventListener("mouseup", endHold);
+  window.addEventListener("touchend", endHold);
+
+  // NO BUTTON LOGIC
   function moveNo() {
     const padding = 50;
     const newX = Math.random() * (window.innerWidth - noBtn.offsetWidth - padding);
     const newY = Math.random() * (window.innerHeight - noBtn.offsetHeight - padding);
     
-    noBtn.style.position = "fixed";
     noBtn.style.left = newX + "px";
     noBtn.style.top = newY + "px";
   }
 
   noBtn.addEventListener("mouseenter", moveNo);
-
   document.addEventListener("mousemove", (e) => {
+    if (noBtn.style.display === "none") return;
     const rect = noBtn.getBoundingClientRect();
     const distance = Math.hypot(e.clientX - (rect.left + rect.width/2), e.clientY - (rect.top + rect.height/2));
     if (distance < 100) moveNo();
   });
 
+  // YES BUTTON LOGIC
   document.getElementById("yes").onclick = () => {
-    // New HTML structure with img11.png included
     document.body.innerHTML = `
       <div style="
         height:100vh;
