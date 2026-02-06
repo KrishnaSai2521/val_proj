@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Proposal</title>
 
 <style>
@@ -10,112 +11,123 @@
     height: 100%;
     margin: 0;
     padding: 0;
+    /* This removes the pale sidebars and makes the base color uniform */
+    background-color: #d6336c; 
   }
 
-  body{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background: radial-gradient(circle at top left,#ffe0e0,#fad0c4,#fff0f5);
-    font-family:'Comic Sans MS',cursive;
-    overflow:hidden;
-    position:relative;
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Comic Sans MS', cursive;
+    overflow: hidden;
+    position: relative;
+    /* A subtle gradient overlay to give it depth without changing the main color */
+    background: linear-gradient(135deg, #d6336c 0%, #ff6b95 100%);
   }
 
-  body::before, body::after{
-    content:"";
-    position:absolute;
-    width:420px;
-    height:420px;
-    background:radial-gradient(circle,rgba(255,255,255,.35),transparent 70%);
-    filter:blur(90px);
-    animation:blob 18s infinite alternate ease-in-out;
-    z-index:0;
+  /* Animated floating light blobs for a dreamy effect */
+  body::before, body::after {
+    content: "";
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent 70%);
+    filter: blur(90px);
+    animation: blob 18s infinite alternate ease-in-out;
+    z-index: 0;
   }
-  body::after{animation-delay:6s;width:350px;height:350px;}
+  body::after { animation-delay: 6s; width: 350px; height: 350px; }
 
-  @keyframes blob{
-    from{transform:translate(-120px,-100px)}
-    to{transform:translate(260px,200px)}
+  @keyframes blob {
+    from { transform: translate(-120px, -100px); }
+    to { transform: translate(260px, 200px); }
   }
 
-  .container{
+  .container {
     width: 100vw;
     height: 100vh;
-    padding: 60px;
-    background: linear-gradient(135deg,rgba(255,255,255,.35),rgba(255,255,255,.1));
-    backdrop-filter: blur(25px) saturate(180%);
-    border: 1px solid rgba(255,255,255,.4);
-    box-shadow: inset 0 1px 1px rgba(255,255,255,.6), 0 25px 50px rgba(0,0,0,.25);
-    text-align:center;
-    z-index:2;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
+    padding: 20px;
+    text-align: center;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
   }
 
-  h1{
+  h1 {
     font-size: 2.8rem;
-    color:#d6336c;
-    margin-bottom:35px;
-    text-shadow:0 4px 10px rgba(0,0,0,.2);
+    color: white; /* Changed to white for better contrast on dark pink */
+    margin-bottom: 35px;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.3);
     z-index: 3;
   }
 
-  img.proposal-img{
-    width:320px;
-    height:auto;
-    margin-bottom:25px;
-    border-radius:12px;
-    box-shadow:0 8px 20px rgba(0,0,0,.25);
+  img.proposal-img {
+    width: 320px;
+    max-width: 80%;
+    height: auto;
+    margin-bottom: 25px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    border: 5px solid rgba(255, 255, 255, 0.3);
   }
 
-  button{
+  button {
     padding: 16px 38px;
     font-size: 18px;
-    border-radius: 18px;
-    cursor:pointer;
+    border-radius: 50px; /* Rounder buttons */
+    cursor: pointer;
     margin: 12px;
-    font-weight:bold;
-    transition:.25s;
+    font-weight: bold;
+    transition: 0.25s;
     z-index: 3;
+    border: none;
   }
 
-  #yes{
-    border:none;
-    background:linear-gradient(135deg,#d6336c,#ff8fa3);
-    color:white;
-    box-shadow:0 0 30px rgba(214,51,108,.6);
-    animation:pulse 2s infinite;
-  }
-  @keyframes pulse{
-    0%,100%{transform:scale(1)}
-    50%{transform:scale(1.08)}
+  #yes {
+    background: white;
+    color: #d6336c;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    animation: pulse 2s infinite;
   }
 
-  #yes:hover{box-shadow:0 0 45px rgba(214,51,108,.9)}
-
-  #no{
-    position:absolute;
-    left:56%;
-    top:62%;
-    background:linear-gradient(135deg,rgba(255,255,255,.35),rgba(255,255,255,.15));
-    color:#d6336c;
-    border:1px solid rgba(255,255,255,.45);
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
   }
 
-  .heart{
-    position:absolute;
-    bottom:-20px;
-    font-size:16px;
-    animation:floatUp linear infinite;
-    pointer-events:none;
+  #yes:hover {
+    transform: scale(1.15);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
   }
 
-  @keyframes floatUp{
-    from{transform:translateY(0) rotate(0deg);opacity:1}
-    to{transform:translateY(-110vh) rotate(360deg);opacity:0}
+  #no {
+    position: absolute;
+    /* Starting position */
+    left: 50%;
+    top: 75%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+  }
+
+  .heart {
+    position: absolute;
+    bottom: -20px;
+    font-size: 16px;
+    animation: floatUp linear infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes floatUp {
+    from { transform: translateY(0) rotate(0deg); opacity: 1; }
+    to { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
   }
 </style>
 </head>
@@ -131,37 +143,49 @@
 <button id="no">No 💔</button>
 
 <script>
-  const noBtn=document.getElementById("no");
-  function moveNo(){
-    const p=30;
-    noBtn.style.left=Math.random()*(innerWidth-noBtn.offsetWidth-p)+"px";
-    noBtn.style.top=Math.random()*(innerHeight-noBtn.offsetHeight-p)+"px";
-  }
-  noBtn.addEventListener("mouseenter",moveNo);
+  const noBtn = document.getElementById("no");
 
-  document.addEventListener("mousemove",e=>{
-    const r=noBtn.getBoundingClientRect();
-    if(Math.hypot(e.clientX-r.left,e.clientY-r.top)<110)moveNo();
+  function moveNo() {
+    const padding = 50;
+    // Calculate random positions within the visible window
+    const newX = Math.random() * (window.innerWidth - noBtn.offsetWidth - padding);
+    const newY = Math.random() * (window.innerHeight - noBtn.offsetHeight - padding);
+    
+    noBtn.style.position = "fixed"; // Ensures it stays on top of everything
+    noBtn.style.left = newX + "px";
+    noBtn.style.top = newY + "px";
+  }
+
+  // Moves when hovered
+  noBtn.addEventListener("mouseenter", moveNo);
+
+  // Moves if the mouse gets too close (for extra trickery!)
+  document.addEventListener("mousemove", (e) => {
+    const rect = noBtn.getBoundingClientRect();
+    const distance = Math.hypot(e.clientX - (rect.left + rect.width/2), e.clientY - (rect.top + rect.height/2));
+    if (distance < 100) moveNo();
   });
 
-  document.getElementById("yes").onclick=()=>{
-    document.body.innerHTML=`
+  document.getElementById("yes").onclick = () => {
+    // Clear screen for the success message
+    document.body.innerHTML = `
       <div style="
         height:100vh;
+        width: 100vw;
         display:flex;
         align-items:center;
         justify-content:center;
-        background:radial-gradient(circle,#ff9aa2,#d6336c);
+        background: radial-gradient(circle, #ff9aa2, #d6336c);
         color:white;
         text-align:center;
         font-family:'Comic Sans MS', cursive;
         overflow:hidden;
       ">
-        <div id="story" style="font-size:2.4rem;"></div>
+        <div id="story" style="font-size:2.8rem; padding: 20px; font-weight: bold; text-shadow: 2px 2px 10px rgba(0,0,0,0.2);"></div>
       </div>
     `;
 
-    const lines=[
+    const lines = [
       "You said yes… 💕",
       "I’ve dreamed of this moment 💓",
       "You are my forever 🥹",
@@ -170,26 +194,33 @@
       "Chinnu, thank you for saying yes 💍"
     ];
 
-    let i=0;
-    const s=document.getElementById("story");
-    const interval=setInterval(()=>{
-      s.innerHTML=lines[i];
-      i++;
-      if(i===lines.length)clearInterval(interval);
-    },2200);
+    let i = 0;
+    const storyDiv = document.getElementById("story");
+    
+    // Display the lines one by one
+    const interval = setInterval(() => {
+      storyDiv.style.opacity = 0;
+      setTimeout(() => {
+        storyDiv.innerHTML = lines[i];
+        storyDiv.style.opacity = 1;
+        i++;
+        if (i === lines.length) clearInterval(interval);
+      }, 500);
+    }, 2500);
 
-    setInterval(createHeart,350);
+    // Start the heart shower
+    setInterval(createHeart, 300);
   };
 
-  function createHeart(){
-    const h=document.createElement("div");
-    h.className="heart";
-    h.innerHTML="💗";
-    h.style.left=Math.random()*100+"vw";
-    h.style.fontSize=Math.random()*14+14+"px";
-    h.style.animationDuration=Math.random()*3+4+"s";
+  function createHeart() {
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.innerHTML = "💗";
+    h.style.left = Math.random() * 100 + "vw";
+    h.style.fontSize = Math.random() * 20 + 15 + "px";
+    h.style.animationDuration = Math.random() * 2 + 3 + "s";
     document.body.appendChild(h);
-    setTimeout(()=>h.remove(),7000);
+    setTimeout(() => h.remove(), 5000);
   }
 </script>
 
