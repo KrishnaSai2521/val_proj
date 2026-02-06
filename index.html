@@ -37,3 +37,210 @@
     }
 
     body::after {
+      animation-delay: 6s;
+      width: 360px;
+      height: 360px;
+    }
+
+    @keyframes blobMove {
+      from { transform: translate(-100px, -100px); }
+      to { transform: translate(300px, 200px); }
+    }
+
+    /* Liquid glass card */
+    .container {
+      position: relative;
+      padding: 50px 55px;
+      border-radius: 28px;
+      background: linear-gradient(
+        135deg,
+        rgba(255,255,255,0.35),
+        rgba(255,255,255,0.1)
+      );
+      backdrop-filter: blur(25px) saturate(180%);
+      -webkit-backdrop-filter: blur(25px) saturate(180%);
+      border: 1px solid rgba(255,255,255,0.35);
+      box-shadow:
+        inset 0 1px 1px rgba(255,255,255,0.6),
+        0 25px 50px rgba(0,0,0,0.25);
+      text-align: center;
+      z-index: 2;
+    }
+
+    /* Glass shine */
+    .container::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(
+        120deg,
+        transparent 30%,
+        rgba(255,255,255,0.5),
+        transparent 70%
+      );
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    h1 {
+      font-size: 2.3rem;
+      color: #ff1e56;
+      margin-bottom: 30px;
+      text-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    button {
+      padding: 16px 36px;
+      font-size: 18px;
+      border-radius: 16px;
+      cursor: pointer;
+      margin: 12px;
+      font-weight: bold;
+      backdrop-filter: blur(12px);
+      transition: all 0.2s ease;
+    }
+
+    /* YES – liquid glow */
+    #yes {
+      border: none;
+      background: linear-gradient(
+        135deg,
+        rgba(255,30,86,0.9),
+        rgba(255,120,150,0.85)
+      );
+      color: white;
+      box-shadow:
+        inset 0 1px 1px rgba(255,255,255,0.5),
+        0 0 25px rgba(255,30,86,0.6);
+    }
+
+    #yes:hover {
+      transform: scale(1.15);
+      box-shadow: 0 0 40px rgba(255,30,86,0.9);
+    }
+
+    /* NO – evil liquid glass 😈 */
+    #no {
+      position: absolute;
+      left: 56%;
+      top: 62%;
+      background: linear-gradient(
+        135deg,
+        rgba(255,255,255,0.35),
+        rgba(255,255,255,0.15)
+      );
+      color: #ff1e56;
+      border: 1px solid rgba(255,255,255,0.45);
+      box-shadow:
+        inset 0 1px 1px rgba(255,255,255,0.6),
+        0 10px 25px rgba(0,0,0,0.25);
+    }
+
+    /* Floating hearts */
+    .heart {
+      position: absolute;
+      bottom: -20px;
+      font-size: 18px;
+      opacity: 0.8;
+      animation: floatUp linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      from { transform: translateY(0); opacity: 1; }
+      to { transform: translateY(-110vh); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Will you be my Valentine Chinnu? 💖</h1>
+    <button id="yes">Yes 💘</button>
+  </div>
+
+  <button id="no">No 💔</button>
+
+  <script>
+    /* 😈 EVIL NO BUTTON */
+    const noBtn = document.getElementById("no");
+
+    function moveNo() {
+      const pad = 30;
+      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - pad);
+      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - pad);
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+    }
+
+    noBtn.addEventListener("mouseenter", moveNo);
+    document.addEventListener("mousemove", (e) => {
+      const r = noBtn.getBoundingClientRect();
+      const d = Math.hypot(
+        e.clientX - (r.left + r.width / 2),
+        e.clientY - (r.top + r.height / 2)
+      );
+      if (d < 110) moveNo();
+    });
+
+    /* 💖 YES MAGIC */
+    document.getElementById("yes").addEventListener("click", () => {
+      document.body.innerHTML = `
+        <div style="
+          height:100vh;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          background:radial-gradient(circle,#ff758c,#ff1e56);
+          color:white;
+          font-family:'Comic Sans MS', cursive;
+          text-align:center;
+        ">
+          <h1>YAYYYYY 💕<br>I knew it 😘</h1>
+        </div>
+      `;
+
+      for (let i = 0; i < 70; i++) explodeHeart();
+    });
+
+    function explodeHeart() {
+      const h = document.createElement("div");
+      h.innerHTML = "💗";
+      h.style.position = "absolute";
+      h.style.left = "50%";
+      h.style.top = "50%";
+      h.style.fontSize = Math.random() * 24 + 16 + "px";
+      h.style.transform = "translate(-50%, -50%)";
+      h.style.transition = "all 1.4s ease-out";
+      document.body.appendChild(h);
+
+      const x = (Math.random() - 0.5) * 650;
+      const y = (Math.random() - 0.5) * 650;
+
+      setTimeout(() => {
+        h.style.transform = `translate(${x}px, ${y}px)`;
+        h.style.opacity = "0";
+      }, 40);
+
+      setTimeout(() => h.remove(), 1500);
+    }
+
+    /* 💕 FLOATING HEARTS */
+    function createHeart() {
+      const h = document.createElement("div");
+      h.className = "heart";
+      h.innerHTML = "💗";
+      h.style.left = Math.random() * 100 + "vw";
+      h.style.fontSize = Math.random() * 14 + 14 + "px";
+      h.style.animationDuration = Math.random() * 3 + 4 + "s";
+      document.body.appendChild(h);
+
+      setTimeout(() => h.remove(), 7000);
+    }
+
+    setInterval(createHeart, 380);
+  </script>
+
+</body>
+</html>
