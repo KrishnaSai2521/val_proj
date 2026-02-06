@@ -24,112 +24,72 @@
     background: linear-gradient(135deg, #d6336c 0%, #ff6b95 100%);
   }
 
-  /* Blob background animations */
-  body::before, body::after {
+  /* Background effect */
+  body::before {
     content: "";
     position: absolute;
-    width: 420px;
-    height: 420px;
+    width: 400px;
+    height: 400px;
     background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent 70%);
-    filter: blur(90px);
-    animation: blob 18s infinite alternate ease-in-out;
+    filter: blur(80px);
+    animation: blob 15s infinite alternate ease-in-out;
     z-index: 0;
   }
-  body::after { animation-delay: 6s; width: 350px; height: 350px; }
 
   @keyframes blob {
-    from { transform: translate(-120px, -100px); }
-    to { transform: translate(260px, 200px); }
+    from { transform: translate(-100px, -100px); }
+    to { transform: translate(200px, 200px); }
   }
 
   .container {
     width: 100vw;
     height: 100vh;
-    padding: 20px;
     text-align: center;
     z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    box-sizing: border-box;
-  }
-
-  /* Intro Section: Hold Heart */
-  #hold-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    transition: opacity 1s;
-  }
-
-  .hold-instruction {
-    color: white;
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    text-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  }
-
-  #heart-to-hold {
-    font-size: 80px;
-    cursor: pointer;
-    user-select: none;
-    transition: transform 0.1s, filter 0.3s;
-    animation: heartbeat 1.5s infinite;
-    display: inline-block;
-  }
-
-  @keyframes heartbeat {
-    0% { transform: scale(1); }
-    15% { transform: scale(1.2); }
-    30% { transform: scale(1); }
-    45% { transform: scale(1.1); }
-    60% { transform: scale(1); }
-  }
-
-  /* Proposal Section (Hidden initially) */
-  #proposal-section {
-    display: none;
-    opacity: 0;
-    transition: opacity 1s;
-    flex-direction: column;
-    align-items: center;
   }
 
   h1 {
-    font-size: 2.8rem;
+    font-size: 2.5rem;
     color: white;
-    margin-bottom: 35px;
+    margin-bottom: 20px;
     text-shadow: 0 4px 10px rgba(0,0,0,0.3);
   }
 
-  img.proposal-img {
-    width: 320px;
+  .proposal-img {
+    width: 300px;
     max-width: 80%;
-    height: auto;
-    margin-bottom: 25px;
     border-radius: 20px;
     box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    margin-bottom: 25px;
     border: 5px solid rgba(255, 255, 255, 0.3);
   }
 
   button {
-    padding: 16px 38px;
+    padding: 15px 35px;
     font-size: 18px;
     border-radius: 50px;
     cursor: pointer;
-    margin: 12px;
+    margin: 10px;
     font-weight: bold;
-    transition: 0.25s;
     border: none;
+    transition: 0.3s;
   }
 
   #yes {
     background: white;
     color: #d6336c;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     animation: pulse 2s infinite;
+  }
+
+  #no {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
   }
 
   @keyframes pulse {
@@ -137,21 +97,25 @@
     50% { transform: scale(1.1); }
   }
 
-  #no {
-    position: fixed;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(5px);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    z-index: 10;
+  /* Stage 2 & 3: Hold Heart Styles */
+  #heart-to-hold {
+    font-size: 100px;
+    cursor: pointer;
+    user-select: none;
+    display: inline-block;
+    animation: heartbeat 1.5s infinite;
   }
 
-  .heart {
+  @keyframes heartbeat {
+    0% { transform: scale(1); }
+    15% { transform: scale(1.2); }
+    30% { transform: scale(1); }
+  }
+
+  .heart-particle {
     position: absolute;
     bottom: -20px;
-    font-size: 16px;
     animation: floatUp linear infinite;
-    pointer-events: none;
     z-index: 1;
   }
 
@@ -161,146 +125,112 @@
   }
 </style>
 </head>
-
 <body>
 
-<div class="container">
-  <div id="hold-section">
-    <div class="hold-instruction">Hold my heart... ❤️</div>
-    <div id="heart-to-hold">❤️</div>
-  </div>
-
-  <div id="proposal-section">
-    <img src="intro.png" alt="Intro" class="proposal-img" />
-    <h1>Chinnu, will you marry me? 💍</h1>
+<div class="container" id="main-content">
+  <img src="intro.png" alt="Proposal" class="proposal-img" />
+  <h1>Chinnu, will you marry me? 💍</h1>
+  <div id="btn-wrapper">
     <button id="yes">Yes 💖</button>
+    <button id="no">No 💔</button>
   </div>
 </div>
 
-<button id="no" style="display:none;">No 💔</button>
-
 <script>
+  const mainContent = document.getElementById("main-content");
   const noBtn = document.getElementById("no");
-  const heartToHold = document.getElementById("heart-to-hold");
-  const holdSection = document.getElementById("hold-section");
-  const proposalSection = document.getElementById("proposal-section");
 
-  let holdTimer;
-  let scale = 1;
-
-  // HOLD LOGIC
-  function startHold() {
-    holdTimer = setInterval(() => {
-      scale += 0.05;
-      heartToHold.style.transform = `scale(${scale})`;
-      heartToHold.style.filter = `drop-shadow(0 0 ${scale * 10}px white)`;
-      
-      if (scale > 3) {
-        completeHold();
-      }
-    }, 50);
-  }
-
-  function endHold() {
-    clearInterval(holdTimer);
-    if (scale <= 3) {
-      scale = 1;
-      heartToHold.style.transform = `scale(1)`;
-      heartToHold.style.filter = `none`;
-    }
-  }
-
-  function completeHold() {
-    clearInterval(holdTimer);
-    holdSection.style.opacity = "0";
-    setTimeout(() => {
-      holdSection.style.display = "none";
-      proposalSection.style.display = "flex";
-      noBtn.style.display = "block";
-      setTimeout(() => proposalSection.style.opacity = "1", 50);
-    }, 1000);
-  }
-
-  // Event Listeners for holding
-  heartToHold.addEventListener("mousedown", startHold);
-  heartToHold.addEventListener("touchstart", startHold);
-  window.addEventListener("mouseup", endHold);
-  window.addEventListener("touchend", endHold);
-
-  // NO BUTTON LOGIC
-  function moveNo() {
-    const padding = 50;
-    const newX = Math.random() * (window.innerWidth - noBtn.offsetWidth - padding);
-    const newY = Math.random() * (window.innerHeight - noBtn.offsetHeight - padding);
-    
-    noBtn.style.left = newX + "px";
-    noBtn.style.top = newY + "px";
-  }
-
-  noBtn.addEventListener("mouseenter", moveNo);
-  document.addEventListener("mousemove", (e) => {
-    if (noBtn.style.display === "none") return;
-    const rect = noBtn.getBoundingClientRect();
-    const distance = Math.hypot(e.clientX - (rect.left + rect.width/2), e.clientY - (rect.top + rect.height/2));
-    if (distance < 100) moveNo();
+  // No Button Runner Logic
+  noBtn.addEventListener("mouseenter", () => {
+    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+    noBtn.style.position = "absolute";
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
   });
 
-  // YES BUTTON LOGIC
+  // STAGE 2: YES CLICKED -> SHOW HOLD PROMPT
   document.getElementById("yes").onclick = () => {
-    document.body.innerHTML = `
-      <div style="
-        height:100vh;
-        width: 100vw;
-        display:flex;
-        flex-direction: column;
-        align-items:center;
-        justify-content:center;
-        background: radial-gradient(circle, #ff9aa2, #d6336c);
-        color:white;
-        text-align:center;
-        font-family:'Comic Sans MS', cursive;
-        overflow:hidden;
-      ">
-        <img src="img11.png" alt="Yes!" style="
-          width: 320px; 
-          max-width: 80%; 
-          border-radius: 20px; 
-          box-shadow: 0 15px 35px rgba(0,0,0,0.3); 
-          margin-bottom: 30px;
-          border: 5px solid rgba(255, 255, 255, 0.3);
-        " />
-        <div id="story" style="font-size:2.4rem; padding: 20px; font-weight: bold; text-shadow: 2px 2px 10px rgba(0,0,0,0.2); transition: opacity 0.5s;"></div>
-      </div>
+    mainContent.innerHTML = `
+      <h1 style="margin-bottom: 50px;">Hold my heart... ❤️</h1>
+      <div id="heart-to-hold">❤️</div>
+      <p style="color:white; margin-top:20px; font-style:italic;">Keep holding until it bursts!</p>
     `;
 
-    const lines = [
-      "You said yes… 💕",
-      "I’ve dreamed of this moment 💓",
-      "You are my forever 🥹",
-      "Life with you is all I want 🌸",
-      "Together, we’ll build our story 💖",
-      "Chinnu, thank you for saying yes 💍"
-    ];
-
-    let i = 0;
-    const storyDiv = document.getElementById("story");
-    
-    const interval = setInterval(() => {
-      storyDiv.style.opacity = 0;
-      setTimeout(() => {
-        storyDiv.innerHTML = lines[i];
-        storyDiv.style.opacity = 1;
-        i++;
-        if (i === lines.length) clearInterval(interval);
-      }, 500);
-    }, 2500);
-
-    setInterval(createHeart, 300);
+    setupHoldLogic();
   };
+
+  // STAGE 3: HOLD LOGIC
+  function setupHoldLogic() {
+    const heart = document.getElementById("heart-to-hold");
+    let holdTimer;
+    let scale = 1;
+
+    const startHold = () => {
+      holdTimer = setInterval(() => {
+        scale += 0.05;
+        heart.style.transform = `scale(${scale})`;
+        heart.style.filter = `drop-shadow(0 0 ${scale * 10}px white)`;
+        if (scale > 3.5) {
+          clearInterval(holdTimer);
+          showFinalStage();
+        }
+      }, 50);
+    };
+
+    const endHold = () => {
+      clearInterval(holdTimer);
+      if (scale < 3.5) {
+        scale = 1;
+        heart.style.transform = "scale(1)";
+        heart.style.filter = "none";
+      }
+    };
+
+    heart.addEventListener("mousedown", startHold);
+    heart.addEventListener("touchstart", startHold);
+    window.addEventListener("mouseup", endHold);
+    window.addEventListener("touchend", endHold);
+  }
+
+  // STAGE 4: FINAL IMAGE AND STORY
+  function showFinalStage() {
+    mainContent.style.opacity = 0;
+    setTimeout(() => {
+      mainContent.innerHTML = `
+        <img src="img11.png" alt="Our Forever" class="proposal-img" style="width:320px;" />
+        <div id="story" style="font-size:2rem; color:white; font-weight:bold; height:100px; text-shadow: 2px 2px 8px rgba(0,0,0,0.3);"></div>
+      `;
+      mainContent.style.opacity = 1;
+
+      const lines = [
+        "You said yes… 💕",
+        "I’ve dreamed of this moment 💓",
+        "You are my forever 🥹",
+        "Life with you is all I want 🌸",
+        "Together, we’ll build our story 💖",
+        "Chinnu, thank you for saying yes 💍"
+      ];
+
+      let i = 0;
+      const storyDiv = document.getElementById("story");
+      const interval = setInterval(() => {
+        storyDiv.style.opacity = 0;
+        setTimeout(() => {
+          storyDiv.innerHTML = lines[i];
+          storyDiv.style.opacity = 1;
+          i++;
+          if (i === lines.length) clearInterval(interval);
+        }, 500);
+      }, 3000);
+
+      setInterval(createHeart, 300);
+    }, 500);
+  }
 
   function createHeart() {
     const h = document.createElement("div");
-    h.className = "heart";
+    h.className = "heart-particle";
     h.innerHTML = "💗";
     h.style.left = Math.random() * 100 + "vw";
     h.style.fontSize = Math.random() * 20 + 15 + "px";
