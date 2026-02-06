@@ -11,7 +11,6 @@
     height: 100%;
     margin: 0;
     padding: 0;
-    /* This removes the pale sidebars and makes the base color uniform */
     background-color: #d6336c; 
   }
 
@@ -22,11 +21,9 @@
     font-family: 'Comic Sans MS', cursive;
     overflow: hidden;
     position: relative;
-    /* A subtle gradient overlay to give it depth without changing the main color */
     background: linear-gradient(135deg, #d6336c 0%, #ff6b95 100%);
   }
 
-  /* Animated floating light blobs for a dreamy effect */
   body::before, body::after {
     content: "";
     position: absolute;
@@ -59,7 +56,7 @@
 
   h1 {
     font-size: 2.8rem;
-    color: white; /* Changed to white for better contrast on dark pink */
+    color: white;
     margin-bottom: 35px;
     text-shadow: 0 4px 10px rgba(0,0,0,0.3);
     z-index: 3;
@@ -78,7 +75,7 @@
   button {
     padding: 16px 38px;
     font-size: 18px;
-    border-radius: 50px; /* Rounder buttons */
+    border-radius: 50px;
     cursor: pointer;
     margin: 12px;
     font-weight: bold;
@@ -99,14 +96,8 @@
     50% { transform: scale(1.1); }
   }
 
-  #yes:hover {
-    transform: scale(1.15);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
-  }
-
   #no {
     position: absolute;
-    /* Starting position */
     left: 50%;
     top: 75%;
     transform: translateX(-50%);
@@ -147,19 +138,16 @@
 
   function moveNo() {
     const padding = 50;
-    // Calculate random positions within the visible window
     const newX = Math.random() * (window.innerWidth - noBtn.offsetWidth - padding);
     const newY = Math.random() * (window.innerHeight - noBtn.offsetHeight - padding);
     
-    noBtn.style.position = "fixed"; // Ensures it stays on top of everything
+    noBtn.style.position = "fixed";
     noBtn.style.left = newX + "px";
     noBtn.style.top = newY + "px";
   }
 
-  // Moves when hovered
   noBtn.addEventListener("mouseenter", moveNo);
 
-  // Moves if the mouse gets too close (for extra trickery!)
   document.addEventListener("mousemove", (e) => {
     const rect = noBtn.getBoundingClientRect();
     const distance = Math.hypot(e.clientX - (rect.left + rect.width/2), e.clientY - (rect.top + rect.height/2));
@@ -167,12 +155,13 @@
   });
 
   document.getElementById("yes").onclick = () => {
-    // Clear screen for the success message
+    // New HTML structure with img11.png included
     document.body.innerHTML = `
       <div style="
         height:100vh;
         width: 100vw;
         display:flex;
+        flex-direction: column;
         align-items:center;
         justify-content:center;
         background: radial-gradient(circle, #ff9aa2, #d6336c);
@@ -181,7 +170,15 @@
         font-family:'Comic Sans MS', cursive;
         overflow:hidden;
       ">
-        <div id="story" style="font-size:2.8rem; padding: 20px; font-weight: bold; text-shadow: 2px 2px 10px rgba(0,0,0,0.2);"></div>
+        <img src="img11.png" alt="Yes!" style="
+          width: 320px; 
+          max-width: 80%; 
+          border-radius: 20px; 
+          box-shadow: 0 15px 35px rgba(0,0,0,0.3); 
+          margin-bottom: 30px;
+          border: 5px solid rgba(255, 255, 255, 0.3);
+        " />
+        <div id="story" style="font-size:2.4rem; padding: 20px; font-weight: bold; text-shadow: 2px 2px 10px rgba(0,0,0,0.2); transition: opacity 0.5s;"></div>
       </div>
     `;
 
@@ -197,7 +194,6 @@
     let i = 0;
     const storyDiv = document.getElementById("story");
     
-    // Display the lines one by one
     const interval = setInterval(() => {
       storyDiv.style.opacity = 0;
       setTimeout(() => {
@@ -208,7 +204,6 @@
       }, 500);
     }, 2500);
 
-    // Start the heart shower
     setInterval(createHeart, 300);
   };
 
